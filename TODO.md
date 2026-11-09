@@ -40,7 +40,8 @@ This list reflects the current implementation in this standalone project. A chec
 - [x] Verified evidence-retention migration redacts legacy static/AI snippets only for reviews without retained source.
 - [x] Verified frontend: 12 tests passed; production build passed; `npm audit` — 0 vulnerabilities.
 - [x] Prevented production API calls from falling back to a visitor's localhost; the sign-in screen now explains when the backend is not configured, and saved-review requests use the shared API client.
-- [x] GitHub Actions run `42593038242` passed frontend tests/build, backend tests, Docker image build, and container `/health` smoke test.
+- [x] GitHub Actions run `42593496295` passed frontend tests/build, backend tests, Docker image build, and container `/health` smoke test.
+- [x] Redeployed the frontend to Vercel after validation; confirmed HTTP 200 and verified the production API-unconfigured notice is in the deployed JavaScript.
 - [x] Validated Render YAML syntax.
 
 ## In progress / next
@@ -69,7 +70,7 @@ This list reflects the current implementation in this standalone project. A chec
 - Demo DB is created with SQLAlchemy `create_all` and has no Alembic revision marker; do not run `alembic upgrade head` directly against this local DB. Migration validation used a fresh throwaway database.
 - Checkstyle was verified with a real Checkstyle 10.23.0 JAR and Java 21.
 - The local demo frontend and API are running at `http://127.0.0.1:5173` and `http://127.0.0.1:8001`; the demo account uses the isolated ignored SQLite database.
-- The target public GitHub repository contains the initial project commit on `main`; the local working tree is clean.
+- Changes are pushed to the public GitHub repository on `main`; pre-existing untracked `file.jpe` and `file.jpg` remain untouched.
 - The frontend is deployed at `https://codelens-ai-eight-ivory.vercel.app/`. No production API URL is configured; sign-in, analysis, and history need a separately hosted backend.
 - No Render service, PostgreSQL database, or production Redis service has been provisioned; the backend has not been deployed to production.
 - Existing pre-revocation access tokens must be replaced with a fresh login after applying migration `0003`.
