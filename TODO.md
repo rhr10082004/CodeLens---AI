@@ -48,6 +48,8 @@ This list reflects the current implementation in this standalone project. A chec
 
 - [x] Verified Checkstyle 10.23.0 with Java 21 against a Java sample and confirmed its XML finding output.
 - [x] Created and deployed the frontend to the public Vercel `codelens-ai` project; configured the `frontend/` root, Vite build, `dist` output, and Node 24.x runtime.
+- [x] Deployed the CodeLens FastAPI backend, PostgreSQL database, and Redis-compatible Key Value service to Render on free plans; verified `/health`, database connectivity, API routes, and Vercel-origin CORS.
+- [x] Configured Vercel to proxy `/api/*` to the live Render API so the frontend can use the backend without a Vercel environment variable.
 - [x] Build and smoke-test the production Docker image through GitHub Actions; Docker is unavailable locally.
 - [x] Add source-evidence redaction/retention policy for snippets that analyzers or AI may include inside persisted finding details.
 - [x] Add report downloads and static finding filters/search.
@@ -56,21 +58,21 @@ This list reflects the current implementation in this standalone project. A chec
 - [x] Add landing, about, documentation, settings, and profile pages; current UI is a login and review workspace.
 - [x] Add server-side logout/revocation; refresh-token rotation remains unimplemented.
 - [x] Clarified Gemini source-sharing consent in the review UI and documentation.
-- [ ] Provision a shared production Redis service; local Redis alone is not sufficient for multi-instance deployment.
+- [x] Provisioned a shared Render Key Value service for rate limits; free-tier persistence/reliability limitations remain.
 - [x] Verified Redis rate-limit counters are shared across two local FastAPI instances using an isolated Redis database.
 - [x] Captured the local sign-in screen and analyzed workspace in the session; screenshots are visual references, not committed assets.
 - [x] Authenticated GitHub CLI, scanned staged source for common credential formats, excluded local environment/database/cache files, and pushed the initial commit to `rhr10082004/CodeLens---AI`.
 - [x] Verified the public GitHub repository and live Vercel frontend.
-- [ ] Verify Gemini, PostgreSQL, and Render integrations when credentials and services are provided.
+- [x] Verified the Render API and PostgreSQL health; Gemini calls still require a configured API key.
 
 ## Known environment notes
 
-- Docker is not installed. Git, GitHub CLI, Java 21, Redis for Windows, and Vercel CLI are installed; GitHub CLI is authenticated.
+- Local Docker availability varies by environment; the production image was built and smoke-tested in GitHub Actions.
 - Two local FastAPI instances shared rate-limit counters through the installed Redis service; production still requires a managed/shared Redis service.
 - Demo DB is created with SQLAlchemy `create_all` and has no Alembic revision marker; do not run `alembic upgrade head` directly against this local DB. Migration validation used a fresh throwaway database.
 - Checkstyle was verified with a real Checkstyle 10.23.0 JAR and Java 21.
 - The local demo frontend and API are running at `http://127.0.0.1:5173` and `http://127.0.0.1:8001`; the demo account uses the isolated ignored SQLite database.
 - Changes are pushed to the public GitHub repository on `main`; pre-existing untracked `file.jpe` and `file.jpg` remain untouched.
-- The frontend is deployed at `https://codelens-ai-eight-ivory.vercel.app/`. No production API URL is configured; sign-in, analysis, and history need a separately hosted backend.
-- No Render service, PostgreSQL database, or production Redis service has been provisioned; the backend has not been deployed to production.
+- The frontend is deployed at `https://codelens-ai-eight-ivory.vercel.app/`; the CodeLens API is deployed at `https://codelens-ai-api-a59o.onrender.com` and the Vercel `/api/*` rewrite targets it.
+- Render's free Postgres expires 30 days after creation and is deleted after a further 14-day grace period if not upgraded. The free web service sleeps after 15 minutes idle; free Redis-compatible Key Value data is lost on restart. These free resources are for demo/testing rather than reliable production.
 - Existing pre-revocation access tokens must be replaced with a fresh login after applying migration `0003`.

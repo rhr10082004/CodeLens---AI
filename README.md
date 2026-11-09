@@ -4,9 +4,9 @@ CodeLens AI is a code intelligence workspace combining static analysis with opti
 
 > This is a standalone project, separate from the stock-prediction application.
 
-**Live frontend:** [https://codelens-ai-eight-ivory.vercel.app/](https://codelens-ai-eight-ivory.vercel.app/)
+**Live application:** [https://codelens-ai-eight-ivory.vercel.app/](https://codelens-ai-eight-ivory.vercel.app/)
 
-The frontend is deployed on Vercel. Login, analysis, and review history require the backend, which has not yet been deployed to production.
+The frontend is deployed on Vercel and the FastAPI backend is deployed on Render at [https://codelens-ai-api-a59o.onrender.com](https://codelens-ai-api-a59o.onrender.com). Vercel proxies `/api/*` requests to the backend. The API health check, database connection, login route, and Vercel-origin CORS were verified. Free Render services can sleep when idle; the free PostgreSQL database expires after 30 days and must be upgraded or migrated before expiry to avoid data loss.
 
 ## Contents
 
@@ -158,11 +158,11 @@ Main routes:
 
 Analysis and GitHub endpoints require `Authorization: Bearer <token>`.
 
-## Deployment preparation
+## Deployment
 
-Configuration is included in `backend/Dockerfile`, `render.yaml`, and `frontend/vercel.json`. The Render Docker command runs Alembic migrations before starting FastAPI. Configure `DATABASE_URL`, `JWT_SECRET_KEY`, `CORS_ORIGINS`, and optional provider keys in Render. For Vercel, use `frontend` as the root directory and set `VITE_API_BASE_URL` to the actual Render API URL.
+The frontend is deployed to Vercel and the backend, PostgreSQL, and Redis-compatible Key Value service are deployed through the root `render.yaml` Blueprint. All three Render services currently use the Free plan. Vercel proxies `/api/*` through `frontend/vercel.json`, so no API environment variable is required. The Render Docker startup applies Alembic migrations before starting FastAPI.
 
-These are deployment preparations only. No hosted deployment, external database, Redis service, or frontend/API connectivity in production has been verified. Before deploying with `ENVIRONMENT=production`, provision a shared Redis-compatible service and set `RATE_LIMIT_STORAGE_URI` to its private `redis://` or `rediss://` URL. The API intentionally fails configuration validation if production is left on process-local memory storage. On an existing migrated database, run `cd backend; alembic upgrade head` to apply schema/data migrations, including redaction of old unretained finding evidence.
+Free Render resources are suitable for a temporary demo, not reliable production: the web service spins down after 15 minutes idle and can take about a minute to wake; the free PostgreSQL database expires 30 days after creation, then has a 14-day upgrade window before deletion; free Key Value data is not persisted across restarts. Migrate/upgrade before database expiry and use paid persistent services for production reliability.
 
 ## Security and limitations
 
@@ -176,7 +176,7 @@ These are deployment preparations only. No hosted deployment, external database,
 - `POST /api/auth/logout` revokes the current access token; the browser clears local state immediately and reports if server revocation cannot be reached. Existing access tokens must be refreshed by signing in again after deployment of the revocation migration.
 - Rate limiting uses shared Redis storage when configured. Production rejects process-local memory storage, and Redis storage errors are not swallowed or replaced with local counters. Provision and monitor the Redis service separately. Refresh-token rotation is not implemented.
 - Java analysis requires Java plus a configured Checkstyle JAR; no compilation/execution is performed.
-- GitHub publishing and cloud deployment remain unverified until the required accounts and credentials are available.
+- Gemini-powered review remains unavailable until a valid backend `GEMINI_API_KEY` is configured.
 
 ## Project structure
 
