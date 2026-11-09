@@ -44,7 +44,7 @@ This list reflects the current implementation in this standalone project. A chec
 ## In progress / next
 
 - [x] Verified Checkstyle 10.23.0 with Java 21 against a Java sample and confirmed its XML finding output.
-- [x] Created a separate Vercel `codelens-ai` project and configured the `frontend/` root, Vite build, `dist` output, and Node 24.x runtime; production deployment awaits a backend API URL.
+- [x] Created and deployed the frontend to the public Vercel `codelens-ai` project; configured the `frontend/` root, Vite build, `dist` output, and Node 24.x runtime.
 - [ ] Verify a production Docker build and validate Render deployment; Docker is unavailable and no Render service is configured.
 - [x] Add source-evidence redaction/retention policy for snippets that analyzers or AI may include inside persisted finding details.
 - [x] Add report downloads and static finding filters/search.
@@ -66,6 +66,6 @@ This list reflects the current implementation in this standalone project. A chec
 - Checkstyle was verified with a real Checkstyle 10.23.0 JAR and Java 21.
 - The local demo frontend and API are running at `http://127.0.0.1:5173` and `http://127.0.0.1:8001`; the demo account uses the isolated ignored SQLite database.
 - The target public GitHub repository contains the initial project commit on `main`; the local working tree is clean.
-- A dedicated Vercel project exists and is configured, but no frontend deployment has been made because the production backend URL is not available.
+- The frontend is deployed at `https://codelens-ai-eight-ivory.vercel.app/`. No production API URL is configured; sign-in, analysis, and history need a separately hosted backend.
 - No Render service, PostgreSQL database, or production Redis service has been provisioned; no production deployment has been attempted.
 - Existing pre-revocation access tokens must be replaced with a fresh login after applying migration `0003`.
