@@ -52,12 +52,27 @@ AI test-scenario generation requires authentication, is limited to 10 requests p
 
 ### LLM integration
 
-- **Provider:** Google Gemini API.
-- **Default model:** `gemini-2.5-flash` (configurable through `GEMINI_MODEL`).
-- **Use cases:** Opt-in code review and structured AI test-scenario generation.
-- **Privacy:** Source is sent to Gemini only after the user explicitly opts in.
-- **Current availability:** The integration is implemented, but the deployed backend does not have `GEMINI_API_KEY` configured. These AI features are therefore unavailable in production until an authorized key is added to Render.
-- **Verification:** Provider behavior is covered by mocked tests; live Gemini API calls have not been verified. Gemini is the only LLM provider currently integrated.
+| Area | Technology or method | Project usage |
+|---|---|---|
+| LLM provider | Google Gemini API | The only LLM provider integrated. |
+| Model | `gemini-2.5-flash` | Default model; configurable with `GEMINI_MODEL`. |
+| Prompting | Explicit system instructions and structured prompts | Directs the model to treat submitted source as untrusted data and return evidence-based results. |
+| Structured output | JSON response format and Pydantic validation | Validates AI findings and generated test-scenario descriptions before returning them. |
+| AI features | Code review and test-scenario generation | Optional; source is sent to Gemini only after user consent. Generated scenarios are descriptive, not executable tests. |
+| Production status | `GEMINI_API_KEY` not configured | Gemini features are currently unavailable in the deployed app. Provider behavior is mocked in tests; live Gemini calls have not been verified. |
+
+### Data science and machine-learning scope
+
+| Library, method, or technique | Status |
+|---|---|
+| NumPy and pandas | Not used; the app processes source code and review findings rather than numerical dataframes. |
+| Scatterplots and other statistical visualizations | Not used; no charting or plotting feature is implemented. |
+| Supervised, unsupervised, and reinforcement learning | Not implemented; the project does not train predictive models. |
+| Deep-learning model training or fine-tuning | Not implemented; Gemini is accessed as an external API. |
+| RAG, embeddings, and vector search | Not implemented. |
+| LangChain, LangGraph, and multi-agent frameworks | Not used. |
+
+Static analyzers such as Ruff, Bandit, ESLint, and Checkstyle inspect source code; they are not machine-learning models.
 
 ## Architecture
 
