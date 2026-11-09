@@ -61,18 +61,15 @@ AI test-scenario generation requires authentication, is limited to 10 requests p
 | AI features | Code review and test-scenario generation | Optional; source is sent to Gemini only after user consent. Generated scenarios are descriptive, not executable tests. |
 | Production status | `GEMINI_API_KEY` not configured | Gemini features are currently unavailable in the deployed app. Provider behavior is mocked in tests; live Gemini calls have not been verified. |
 
-### Data science and machine-learning scope
+### AI and analysis methods used
 
-| Library, method, or technique | Status |
+| Method | Project usage |
 |---|---|
-| NumPy and pandas | Not used; the app processes source code and review findings rather than numerical dataframes. |
-| Scatterplots and other statistical visualizations | Not used; no charting or plotting feature is implemented. |
-| Supervised, unsupervised, and reinforcement learning | Not implemented; the project does not train predictive models. |
-| Deep-learning model training or fine-tuning | Not implemented; Gemini is accessed as an external API. |
-| RAG, embeddings, and vector search | Not implemented. |
-| LangChain, LangGraph, and multi-agent frameworks | Not used. |
-
-Static analyzers such as Ruff, Bandit, ESLint, and Checkstyle inspect source code; they are not machine-learning models.
+| Generative AI | Optional code review and test-scenario generation through the Gemini API; requires a configured API key. |
+| Prompt engineering | System instructions establish the review task and treat submitted source as untrusted data. |
+| Structured generation | Gemini returns JSON that is validated against Pydantic schemas before use. |
+| Static code analysis | Ruff, Bandit, ESLint, and optional Checkstyle inspect source without executing it. |
+| Deterministic scoring | The review score is a simple static-finding heuristic, not a trained machine-learning model. |
 
 ## Architecture
 
