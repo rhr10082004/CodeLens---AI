@@ -63,18 +63,15 @@ AI test-scenario generation requires authentication, is limited to 10 requests p
 
 ```mermaid
 flowchart LR
-  Browser[React + Monaco] --> API[FastAPI]
-  API --> Auth[JWT auth]
-  API --> DB[(SQLite / PostgreSQL)]
-  API --> Limits[(Redis shared rate limits)]
-  API --> Py[Python: Ruff + Bandit]
-  API --> JS[JavaScript/TypeScript: ESLint]
-  API --> Java[Java: optional Checkstyle]
-  API -. Optional backend key .-> Gemini[Gemini API]
-  API --> GitHub[GitHub REST API]
+    Browser["Browser · React · Monaco"] -->|"HTTPS"| Vercel["Vercel · Static app + /api proxy"]
+    Vercel -->|"API requests"| API["Render · FastAPI"]
+    API -->|"Account-scoped persistence"| Postgres[("PostgreSQL")]
+    API -->|"Shared rate limits"| Redis[("Redis-compatible Key Value")]
+    API -->|"Static checks only"| Analyzers["Ruff · Bandit · ESLint · Checkstyle"]
+    API -.->|"Optional · explicit user consent"| Gemini["Google Gemini API"]
 ```
 
-See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for workflow, scoring, and data handling.
+The backend treats submitted source as untrusted data and never executes it. See the [architecture and security overview](docs/ARCHITECTURE.md) for request boundaries and deployment details, and the [entity-relationship diagram](docs/ERD.md) for persisted data and retention rules.
 
 ## Entity-relationship diagram
 
