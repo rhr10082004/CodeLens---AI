@@ -55,17 +55,17 @@ This list reflects the current implementation in this standalone project. A chec
 - [x] Clarified Gemini source-sharing consent in the review UI and documentation.
 - [ ] Provision a shared Redis service and verify counters across multiple application instances before multi-instance deployment.
 - [ ] Capture actual UI screenshots.
-- [ ] Complete GitHub CLI authentication and push the secret-checked initial commit to the authorized `rhr10082004/CodeLens---AI` repository.
+- [x] Authenticated GitHub CLI, scanned staged source for common credential formats, excluded local environment/database/cache files, and pushed the initial commit to `rhr10082004/CodeLens---AI`.
 - [ ] Verify Gemini, GitHub, PostgreSQL, Vercel, and Render integrations only with the required credentials/services; do not claim these are live beforehand.
 
 ## Known environment notes
 
-- Docker is not installed. Git, GitHub CLI, Java 21, Redis for Windows, and Vercel CLI are installed; GitHub CLI is not authenticated.
+- Docker is not installed. Git, GitHub CLI, Java 21, Redis for Windows, and Vercel CLI are installed; GitHub CLI is authenticated.
 - A local Redis server responds to ping, but a shared production Redis service and cross-instance counters are not verified; local app development continues to use in-memory rate limits.
 - Demo DB is created with SQLAlchemy `create_all` and has no Alembic revision marker; do not run `alembic upgrade head` directly against this local DB. Migration validation used a fresh throwaway database.
 - Checkstyle was verified with a real Checkstyle 10.23.0 JAR and Java 21.
 - The local demo frontend and API are running at `http://127.0.0.1:5173` and `http://127.0.0.1:8001`; the demo account uses the isolated ignored SQLite database.
-- The target public GitHub repository exists and is empty. The local project is initialized and staged, but no commit or push has been made because GitHub authentication is pending.
+- The target public GitHub repository contains the initial project commit on `main`; the local working tree is clean.
 - A dedicated Vercel project exists and is configured, but no frontend deployment has been made because the production backend URL is not available.
-- No Render service, PostgreSQL database, or production Redis service has been provisioned; no cloud deployment has been attempted.
+- No Render service, PostgreSQL database, or production Redis service has been provisioned; no production deployment has been attempted.
 - Existing pre-revocation access tokens must be replaced with a fresh login after applying migration `0003`.
