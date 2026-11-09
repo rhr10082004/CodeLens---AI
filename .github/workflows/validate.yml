@@ -1,0 +1,70 @@
+name: Validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Test and build frontend
+        working-directory: frontend
+        run: |
+          npm ci
+          npm test
+          npm run build
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: backend/requirements-dev.txt
+
+      - name: Test backend
+        working-directory: backend
+        run: |
+          python -m pip install -r requirements-dev.txt
+          python -m pytest -q -p no:cacheprovider
+
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Build production image
+        run: docker buildx build --load --tag codelens-ai:ci --file backend/Dockerfile .
+
+      - name: Start image and check health
+        run: |
+          docker run --detach --name codelens-ai-ci --publish 8000:8000 \
+            --env ENVIRONMENT=development \
+            --env DATABASE_URL=sqlite:////tmp/codelens-ci.db \
+            --env JWT_SECRET_KEY=local-ci-only-secret-not-for-production-2026 \
+            --env RATE_LIMIT_STORAGE_URI=memory:// \
+            --env CORS_ORIGINS=http://localhost:5173 \
+            codelens-ai:ci
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:8000/health; then
+              exit 0
+            fi
+            sleep 2
+          done
+          docker logs --tail 100 codelens-ai-ci
+          exit 1
+
+      - name: Remove container
+        if: always()
+        run: docker rm --force codelens-ai-ci || true

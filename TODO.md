@@ -45,7 +45,7 @@ This list reflects the current implementation in this standalone project. A chec
 
 - [x] Verified Checkstyle 10.23.0 with Java 21 against a Java sample and confirmed its XML finding output.
 - [x] Created and deployed the frontend to the public Vercel `codelens-ai` project; configured the `frontend/` root, Vite build, `dist` output, and Node 24.x runtime.
-- [ ] Verify a production Docker build and validate Render deployment; Docker is unavailable and no Render service is configured.
+- [ ] Build and smoke-test the production Docker image through GitHub Actions; Docker is unavailable locally.
 - [x] Add source-evidence redaction/retention policy for snippets that analyzers or AI may include inside persisted finding details.
 - [x] Add report downloads and static finding filters/search.
 - [x] Add optional, structured AI test-scenario generation for source available in the active review; disclose Gemini source transfer, require at least one scenario, and ensure generated scenarios are neither executable, executed, nor saved.
@@ -53,10 +53,11 @@ This list reflects the current implementation in this standalone project. A chec
 - [x] Add landing, about, documentation, settings, and profile pages; current UI is a login and review workspace.
 - [x] Add server-side logout/revocation; refresh-token rotation remains unimplemented.
 - [x] Clarified Gemini source-sharing consent in the review UI and documentation.
-- [ ] Provision a shared Redis service and verify counters across multiple application instances before multi-instance deployment.
-- [ ] Capture actual UI screenshots.
+- [ ] Provision a shared production Redis service; local Redis alone is not sufficient for multi-instance deployment.
+- [x] Captured the local sign-in screen and analyzed workspace in the session; screenshots are visual references, not committed assets.
 - [x] Authenticated GitHub CLI, scanned staged source for common credential formats, excluded local environment/database/cache files, and pushed the initial commit to `rhr10082004/CodeLens---AI`.
-- [ ] Verify Gemini, GitHub, PostgreSQL, Vercel, and Render integrations only with the required credentials/services; do not claim these are live beforehand.
+- [x] Verified the public GitHub repository and live Vercel frontend.
+- [ ] Verify Gemini, PostgreSQL, and Render integrations when credentials and services are provided.
 
 ## Known environment notes
 
