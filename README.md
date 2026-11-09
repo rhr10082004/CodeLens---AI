@@ -47,6 +47,12 @@ AI test-scenario generation requires authentication, is limited to 10 requests p
 - Rate limiting: in-memory for development; Redis/Rediss for shared production counters.
 - Authentication: Argon2 password hashing, signed JWT bearer tokens, and per-token revocation on logout.
 - Analysis: Ruff, Bandit, ESLint, optional Checkstyle, Gemini API.
+- LLM: Google Gemini API, default model `gemini-2.5-flash`, for opt-in code review and generated test scenarios. This integration is implemented but is not active in the deployment until `GEMINI_API_KEY` is configured; live Gemini calls have not been verified. No local Ollama model is part of this CodeLens backend.
+- Delivery: Docker, GitHub Actions, Vercel (frontend/API proxy), and Render (FastAPI, PostgreSQL, Redis-compatible Key Value).
+
+### LLMs and AI usage
+
+The app's only implemented LLM provider is Google's Gemini API (`gemini-2.5-flash` by default). Users must explicitly opt in before source is sent to Gemini. The deployed backend currently has no Gemini API key configured, so LLM code review and AI test-scenario generation are unavailable until an authorized key is added to Render as `GEMINI_API_KEY`. Provider behavior is covered by mocked tests; no live Gemini request has been verified. Static checks use Ruff, Bandit, ESLint, and optionally Checkstyle; these are analyzers, not LLMs.
 
 ## Architecture
 
