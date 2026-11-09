@@ -54,6 +54,7 @@ This list reflects the current implementation in this standalone project. A chec
 - [x] Add server-side logout/revocation; refresh-token rotation remains unimplemented.
 - [x] Clarified Gemini source-sharing consent in the review UI and documentation.
 - [ ] Provision a shared production Redis service; local Redis alone is not sufficient for multi-instance deployment.
+- [x] Verified Redis rate-limit counters are shared across two local FastAPI instances using an isolated Redis database.
 - [x] Captured the local sign-in screen and analyzed workspace in the session; screenshots are visual references, not committed assets.
 - [x] Authenticated GitHub CLI, scanned staged source for common credential formats, excluded local environment/database/cache files, and pushed the initial commit to `rhr10082004/CodeLens---AI`.
 - [x] Verified the public GitHub repository and live Vercel frontend.
@@ -62,7 +63,7 @@ This list reflects the current implementation in this standalone project. A chec
 ## Known environment notes
 
 - Docker is not installed. Git, GitHub CLI, Java 21, Redis for Windows, and Vercel CLI are installed; GitHub CLI is authenticated.
-- A local Redis server responds to ping, but a shared production Redis service and cross-instance counters are not verified; local app development continues to use in-memory rate limits.
+- Two local FastAPI instances shared rate-limit counters through the installed Redis service; production still requires a managed/shared Redis service.
 - Demo DB is created with SQLAlchemy `create_all` and has no Alembic revision marker; do not run `alembic upgrade head` directly against this local DB. Migration validation used a fresh throwaway database.
 - Checkstyle was verified with a real Checkstyle 10.23.0 JAR and Java 21.
 - The local demo frontend and API are running at `http://127.0.0.1:5173` and `http://127.0.0.1:8001`; the demo account uses the isolated ignored SQLite database.
