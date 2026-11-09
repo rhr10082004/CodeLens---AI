@@ -18,7 +18,7 @@ The frontend is deployed on Vercel and the FastAPI backend is deployed on Render
 - [Configuration](#configuration)
 - [Run tests](#run-tests)
 - [API](#api)
-- [Deployment preparation](#deployment-preparation)
+- [Deployment](#deployment)
 - [Security and limitations](#security-and-limitations)
 - [Project structure](#project-structure)
 - [Contributing and license](#contributing-and-license)
@@ -41,18 +41,23 @@ AI test-scenario generation requires authentication, is limited to 10 requests p
 
 ## Technology
 
-- Frontend: React 18, TypeScript, Vite 8, Monaco Editor.
-- Backend: Python 3.11+, FastAPI, Pydantic, SQLAlchemy, Alembic.
-- Database: SQLite locally; PostgreSQL with psycopg.
-- Rate limiting: in-memory for development; Redis/Rediss for shared production counters.
-- Authentication: Argon2 password hashing, signed JWT bearer tokens, and per-token revocation on logout.
-- Analysis: Ruff, Bandit, ESLint, optional Checkstyle, Gemini API.
-- LLM: Google Gemini API, default model `gemini-2.5-flash`, for opt-in code review and generated test scenarios. This integration is implemented but is not active in the deployment until `GEMINI_API_KEY` is configured; live Gemini calls have not been verified. No local Ollama model is part of this CodeLens backend.
-- Delivery: Docker, GitHub Actions, Vercel (frontend/API proxy), and Render (FastAPI, PostgreSQL, Redis-compatible Key Value).
+### Application stack
 
-### LLMs and AI usage
+- **Frontend:** React 18, TypeScript, Vite 8, and Monaco Editor.
+- **Backend:** Python 3.11+, FastAPI, and Pydantic.
+- **Data layer:** SQLAlchemy and Alembic; SQLite for local development and PostgreSQL for the hosted service.
+- **Authentication and rate limiting:** Argon2 password hashing, signed JWT bearer tokens with server-side revocation, and Redis-compatible shared rate-limit storage.
+- **Static analysis:** Ruff and Bandit for Python; ESLint for JavaScript/TypeScript; optional Checkstyle for Java. These are analysis tools, not language models.
+- **Deployment and CI:** Docker, GitHub Actions, Vercel for the frontend/API proxy, and Render for the backend and data services.
 
-The app's only implemented LLM provider is Google's Gemini API (`gemini-2.5-flash` by default). Users must explicitly opt in before source is sent to Gemini. The deployed backend currently has no Gemini API key configured, so LLM code review and AI test-scenario generation are unavailable until an authorized key is added to Render as `GEMINI_API_KEY`. Provider behavior is covered by mocked tests; no live Gemini request has been verified. Static checks use Ruff, Bandit, ESLint, and optionally Checkstyle; these are analyzers, not LLMs.
+### LLM integration
+
+- **Provider:** Google Gemini API.
+- **Default model:** `gemini-2.5-flash` (configurable through `GEMINI_MODEL`).
+- **Use cases:** Opt-in code review and structured AI test-scenario generation.
+- **Privacy:** Source is sent to Gemini only after the user explicitly opts in.
+- **Current availability:** The integration is implemented, but the deployed backend does not have `GEMINI_API_KEY` configured. These AI features are therefore unavailable in production until an authorized key is added to Render.
+- **Verification:** Provider behavior is covered by mocked tests; live Gemini API calls have not been verified. Gemini is the only LLM provider currently integrated.
 
 ## Architecture
 
