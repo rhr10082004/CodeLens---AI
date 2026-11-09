@@ -4,6 +4,10 @@ CodeLens AI is a code intelligence workspace combining static analysis with opti
 
 > This is a standalone project, separate from the stock-prediction application.
 
+**Live frontend:** [https://codelens-ai-eight-ivory.vercel.app/](https://codelens-ai-eight-ivory.vercel.app/)
+
+The frontend is deployed on Vercel. Login, analysis, and review history require the backend, which has not yet been deployed to production.
+
 ## Contents
 
 - [Features](#features)
