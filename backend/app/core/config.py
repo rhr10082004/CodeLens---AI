@@ -18,7 +18,7 @@ class Settings(BaseSettings):
         default=SecretStr("memory://"),
         validation_alias="RATE_LIMIT_STORAGE_URI",
     )
-    cors_origins: str = "http://localhost:5173"
+    cors_origins: str = "http://localhost:5173,http://127.0.0.1:5173"
     gemini_api_key: SecretStr | None = None
     gemini_model: str = "gemini-2.5-flash"
     max_source_bytes: int = Field(default=200_000, ge=1_000, le=1_000_000)

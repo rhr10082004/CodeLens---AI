@@ -1,6 +1,6 @@
 # API
 
-Base URL in local development: `http://localhost:8000`.
+Base URL in local development: `http://127.0.0.1:8001`.
 
 FastAPI's interactive OpenAPI UI is served at `/docs`.
 

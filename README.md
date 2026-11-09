@@ -81,7 +81,7 @@ Requirements: Python 3.11+, Node.js 20.19+ (or 22.12+), and npm.
    python -m venv .venv
    .\.venv\Scripts\Activate.ps1
    pip install -r requirements-dev.txt
-   uvicorn app.main:app --reload
+   uvicorn app.main:app --reload --port 8001
    ```
 
 3. In a separate terminal, start the frontend:
@@ -92,7 +92,17 @@ Requirements: Python 3.11+, Node.js 20.19+ (or 22.12+), and npm.
    npm run dev
    ```
 
-The local API is `http://localhost:8000`; the Vite frontend is `http://localhost:5173`. FastAPI's interactive API documentation is at `/docs`. SQLite tables are created automatically during local development.
+The local API is `http://127.0.0.1:8001`; the Vite frontend is `http://127.0.0.1:5173`. FastAPI's interactive API documentation is at `/docs`. SQLite tables are created automatically during local development.
+
+### Local development links
+
+When both local development servers are running:
+
+- Frontend: [http://127.0.0.1:5173](http://127.0.0.1:5173)
+- Backend health: [http://127.0.0.1:8001/health](http://127.0.0.1:8001/health)
+- Backend API documentation: [http://127.0.0.1:8001/docs](http://127.0.0.1:8001/docs)
+
+These are local loopback links, not public hosting: they work only on the computer running the servers. The backend must be running on port `8001` for the frontend's default local API setting to connect. The default CORS configuration allows both `localhost` and `127.0.0.1` on port `5173`.
 
 ## Configuration
 
@@ -136,7 +146,7 @@ Provider tests use mocked responses. The public GitHub read path was also checke
 
 ## API
 
-Base URL: `http://localhost:8000`; OpenAPI UI: `/docs`. Request/response details are in [docs/API.md](docs/API.md).
+Base URL: `http://127.0.0.1:8001`; OpenAPI UI: `/docs`. Request/response details are in [docs/API.md](docs/API.md).
 
 Main routes:
 
