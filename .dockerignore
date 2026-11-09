@@ -1,0 +1,16 @@
+.git
+.env
+.env.*
+!.env.example
+**/node_modules
+**/.venv
+**/venv
+**/__pycache__
+**/*.py[cod]
+**/*.db
+**/*.sqlite
+**/*.sqlite3
+frontend/dist
+**/.pytest_cache
+**/.coverage
+**/htmlcov

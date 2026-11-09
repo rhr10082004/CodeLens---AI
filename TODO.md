@@ -1,0 +1,71 @@
+# CodeLens AI — Progress and Todo List
+
+This list reflects the current implementation in this standalone project. A checked box means the item has been implemented and the listed checks passed; it does not mean an external service or production deployment has been verified.
+
+## Completed
+
+- [x] Created a separate CodeLens AI project in this folder; it is not integrated with the stock-prediction project.
+- [x] Added project setup, security, architecture, API, contributing, license, environment example, and development-status documentation.
+- [x] Built the React + TypeScript frontend with a responsive dark/light workspace, Monaco editor, language selection, auth screens, analysis display, and review history.
+- [x] Implemented FastAPI registration/login, Argon2 password hashing, signed access tokens, authenticated routes, and account-scoped review history/deletion.
+- [x] Added SQLite local persistence and PostgreSQL-compatible SQLAlchemy configuration.
+- [x] Implemented Python Ruff and Bandit integrations with analyzer availability reporting and execution timeouts; submitted code is not executed.
+- [x] Added an honest unavailable state and suppressed the quality score if no static analyzer completed.
+- [x] Added optional Gemini review with validated Pydantic response structure; a real API call has not been verified.
+- [x] Added public GitHub repository browsing and supported-file loading UI, URL/path validation, file-size checks, and rate-limit/error handling.
+- [x] Added an API request-body size limit and tests for unauthorized access, repository URL validation, and oversized requests.
+- [x] Made full source retention opt-in per analysis; source remains temporarily available in the immediate response but is omitted from persisted history unless selected.
+- [x] Added per-IP rate limits to registration, login, analysis, and GitHub routes using an in-process limiter.
+- [x] Added initial Alembic schema migration and verified it on a throwaway SQLite database.
+- [x] Added optional Checkstyle for Java and tests for Checkstyle XML result parsing; source is never compiled or executed.
+- [x] Added isolated ESLint invocation for JavaScript/TypeScript with actual rule/line tests.
+- [x] Added mocked GitHub metadata/tree/content/error tests and mocked Gemini response/schema/missing-key/provider-error/timeout tests.
+- [x] Added static finding search and severity filters plus JSON report downloads.
+- [x] Added Render, Vercel, and Docker deployment configuration (not deployed).
+- [x] Added frontend file upload validation for supported extensions, empty files, and the 200 KB client-side limit.
+- [x] Added server-side per-IP rate-limit test and public-repository-only enforcement.
+- [x] Added source retention behavior tests and clarified retained evidence limitations.
+- [x] Added frontend API-service and registration form tests.
+- [x] Added authenticated logout endpoint that revokes only the active token, with a client-visible warning if remote revocation fails.
+- [x] Added explicit, default-off disclosure before sending source to Google Gemini.
+- [x] Made source and static/AI evidence retention opt-in, redacted snippets from saved and legacy unretained reviews, and documented the policy in the UI and API.
+- [x] Added shared Redis/Rediss rate-limit storage configuration and a production guard against process-local fallback.
+- [x] Added per-token server-side logout revocation and immediate local sign-out.
+- [x] Added source detail to saved reviews, showing retained code or a clear explanation when history omitted it.
+- [x] Verified read-only live GitHub metadata, repository tree, and supported source-file retrieval against the public `psf/requests` repository.
+- [x] Verified backend: `python -m pytest -q -p no:cacheprovider` — 62 passed; Ruff passed; Bandit reported no findings.
+- [x] Applied Alembic migrations through `0003_revoked_access_tokens` and passed `alembic check` on a fresh isolated SQLite database.
+- [x] Verified Redis backend selection, secret-safe settings, and production rejection of in-memory rate limits; a live Redis service was unavailable for cross-instance testing.
+- [x] Verified Alembic migration applies and `alembic check` reports no model/schema drift on SQLite.
+- [x] Verified evidence-retention migration redacts legacy static/AI snippets only for reviews without retained source.
+- [x] Verified frontend: 11 tests passed; production build passed; `npm audit` — 0 vulnerabilities.
+- [x] Validated Render YAML syntax.
+
+## In progress / next
+
+- [x] Verified Checkstyle 10.23.0 with Java 21 against a Java sample and confirmed its XML finding output.
+- [x] Created a separate Vercel `codelens-ai` project and configured the `frontend/` root, Vite build, `dist` output, and Node 24.x runtime; production deployment awaits a backend API URL.
+- [ ] Verify a production Docker build and validate Render deployment; Docker is unavailable and no Render service is configured.
+- [x] Add source-evidence redaction/retention policy for snippets that analyzers or AI may include inside persisted finding details.
+- [x] Add report downloads and static finding filters/search.
+- [x] Add optional, structured AI test-scenario generation for source available in the active review; disclose Gemini source transfer, require at least one scenario, and ensure generated scenarios are neither executable, executed, nor saved.
+- [x] Add source code to persisted review detail views when the user opted into retention.
+- [x] Add landing, about, documentation, settings, and profile pages; current UI is a login and review workspace.
+- [x] Add server-side logout/revocation; refresh-token rotation remains unimplemented.
+- [x] Clarified Gemini source-sharing consent in the review UI and documentation.
+- [ ] Provision a shared Redis service and verify counters across multiple application instances before multi-instance deployment.
+- [ ] Capture actual UI screenshots.
+- [ ] Complete GitHub CLI authentication and push the secret-checked initial commit to the authorized `rhr10082004/CodeLens---AI` repository.
+- [ ] Verify Gemini, GitHub, PostgreSQL, Vercel, and Render integrations only with the required credentials/services; do not claim these are live beforehand.
+
+## Known environment notes
+
+- Docker is not installed. Git, GitHub CLI, Java 21, Redis for Windows, and Vercel CLI are installed; GitHub CLI is not authenticated.
+- A local Redis server responds to ping, but a shared production Redis service and cross-instance counters are not verified; local app development continues to use in-memory rate limits.
+- Demo DB is created with SQLAlchemy `create_all` and has no Alembic revision marker; do not run `alembic upgrade head` directly against this local DB. Migration validation used a fresh throwaway database.
+- Checkstyle was verified with a real Checkstyle 10.23.0 JAR and Java 21.
+- The local demo frontend and API are running at `http://127.0.0.1:5173` and `http://127.0.0.1:8001`; the demo account uses the isolated ignored SQLite database.
+- The target public GitHub repository exists and is empty. The local project is initialized and staged, but no commit or push has been made because GitHub authentication is pending.
+- A dedicated Vercel project exists and is configured, but no frontend deployment has been made because the production backend URL is not available.
+- No Render service, PostgreSQL database, or production Redis service has been provisioned; no cloud deployment has been attempted.
+- Existing pre-revocation access tokens must be replaced with a fresh login after applying migration `0003`.

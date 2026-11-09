@@ -1,0 +1,32 @@
+services:
+  - type: web
+    name: codelens-ai-api
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: .
+    healthCheckPath: /health
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: codelens-ai-postgres
+          property: connectionString
+      - key: ENVIRONMENT
+        value: production
+      - key: JWT_SECRET_KEY
+        sync: false
+      - key: RATE_LIMIT_STORAGE_URI
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: CORS_ORIGINS
+        sync: false
+      - key: MAX_SOURCE_BYTES
+        value: "200000"
+      - key: STORE_SOURCE_BY_DEFAULT
+        value: "false"
+databases:
+  - name: codelens-ai-postgres
+    databaseName: codelens
+    user: codelens
+    plan: basic-256mb
+    region: oregon
