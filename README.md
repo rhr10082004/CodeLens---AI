@@ -13,6 +13,7 @@ The frontend is deployed on Vercel. Login, analysis, and review history require 
 - [Features](#features)
 - [Technology](#technology)
 - [Architecture](#architecture)
+- [Entity-relationship diagram](#entity-relationship-diagram)
 - [Quick start](#quick-start)
 - [Configuration](#configuration)
 - [Run tests](#run-tests)
@@ -63,6 +64,10 @@ flowchart LR
 ```
 
 See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for workflow, scoring, and data handling.
+
+## Entity-relationship diagram
+
+View the database entities, keys, indexes, and relationships in the [ER diagram](docs/ERD.md).
 
 ## Quick start
 
