@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap");
 
+.backend-notice{padding:10px;border:1px solid rgba(241,190,92,.3);border-radius:6px;background:rgba(241,190,92,.08);color:#e9c77f;font-size:12px;line-height:1.5}
 .source-details{margin-top:20px;border:1px solid var(--line);border-radius:8px;color:var(--muted);font-size:12px}
 .source-details summary{padding:12px 14px;cursor:pointer;color:var(--text);font-weight:600}
 .source-details pre{max-height:320px;overflow:auto;margin:0;padding:14px;border-top:1px solid var(--line);white-space:pre-wrap;overflow-wrap:anywhere;background:var(--panel2);color:var(--text);font:12px/1.6 "JetBrains Mono",monospace}

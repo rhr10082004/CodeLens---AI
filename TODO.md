@@ -38,14 +38,16 @@ This list reflects the current implementation in this standalone project. A chec
 - [x] Verified Redis backend selection, secret-safe settings, and production rejection of in-memory rate limits; a live Redis service was unavailable for cross-instance testing.
 - [x] Verified Alembic migration applies and `alembic check` reports no model/schema drift on SQLite.
 - [x] Verified evidence-retention migration redacts legacy static/AI snippets only for reviews without retained source.
-- [x] Verified frontend: 11 tests passed; production build passed; `npm audit` — 0 vulnerabilities.
+- [x] Verified frontend: 12 tests passed; production build passed; `npm audit` — 0 vulnerabilities.
+- [x] Prevented production API calls from falling back to a visitor's localhost; the sign-in screen now explains when the backend is not configured, and saved-review requests use the shared API client.
+- [x] GitHub Actions run `42593038242` passed frontend tests/build, backend tests, Docker image build, and container `/health` smoke test.
 - [x] Validated Render YAML syntax.
 
 ## In progress / next
 
 - [x] Verified Checkstyle 10.23.0 with Java 21 against a Java sample and confirmed its XML finding output.
 - [x] Created and deployed the frontend to the public Vercel `codelens-ai` project; configured the `frontend/` root, Vite build, `dist` output, and Node 24.x runtime.
-- [ ] Build and smoke-test the production Docker image through GitHub Actions; Docker is unavailable locally.
+- [x] Build and smoke-test the production Docker image through GitHub Actions; Docker is unavailable locally.
 - [x] Add source-evidence redaction/retention policy for snippets that analyzers or AI may include inside persisted finding details.
 - [x] Add report downloads and static finding filters/search.
 - [x] Add optional, structured AI test-scenario generation for source available in the active review; disclose Gemini source transfer, require at least one scenario, and ensure generated scenarios are neither executable, executed, nor saved.

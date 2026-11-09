@@ -24,7 +24,7 @@ import {
   X,
 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState, type ChangeEvent, type FormEvent } from "react";
-import { authenticate, browseGitHubRepository, clearToken, fetchGitHubFile, generateTestCases, getToken, listAnalyses, removeAnalysis, revokeSession, runAnalysis, whoAmI } from "./api";
+import { API_CONFIGURED, authenticate, browseGitHubRepository, clearToken, fetchGitHubFile, generateTestCases, getAnalysis, getToken, listAnalyses, removeAnalysis, revokeSession, runAnalysis, whoAmI } from "./api";
 import type { Analysis, AnalysisSummary, GeneratedTestCase, GitHubFile, GitHubRepository, Language, User } from "./types";
 
 const EXAMPLES: Record<Language, string> = {
@@ -182,11 +182,7 @@ function App() {
   async function openReview(id: number) {
     setError("");
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8000"}/api/analyses/${id}`, {
-        headers: { Authorization: `Bearer ${getToken()}` },
-      });
-      if (!response.ok) throw new Error("Review could not be loaded.");
-      setAnalysis((await response.json()) as Analysis);
+      setAnalysis(await getAnalysis(id));
     } catch (err) {
       setError(err instanceof Error ? err.message : "Review could not be loaded.");
     }
@@ -225,6 +221,11 @@ function App() {
           <div className="eyebrow">YOUR CODE, UNDERSTOOD</div>
           <h1>{authMode === "login" ? "Welcome back" : "Create your account"}</h1>
           <p className="muted">Static analysis and thoughtful AI review in one workspace.</p>
+          {!API_CONFIGURED && (
+            <p className="backend-notice" role="status">
+              The production API is not connected yet. Sign-in and code review are unavailable.
+            </p>
+          )}
           <form onSubmit={submitAuth}>
             {authMode === "register" && <label>Your name<input name="name" autoComplete="name" minLength={2} required /></label>}
             <label>Email address<input name="email" type="email" autoComplete="email" required /></label>

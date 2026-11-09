@@ -1,6 +1,8 @@
 import type { Analysis, AnalysisSummary, GeneratedTestCase, GitHubFile, GitHubRepository, Language, User } from "./types";
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8000";
+const API_BASE =
+  import.meta.env.VITE_API_BASE_URL ?? (import.meta.env.DEV ? "http://localhost:8000" : "");
+export const API_CONFIGURED = API_BASE.length > 0;
 const TOKEN_KEY = "codelens_access_token";
 
 export function getToken(): string | null {
@@ -16,6 +18,9 @@ export function clearToken(): void {
 }
 
 async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
+  if (!API_CONFIGURED) {
+    throw new Error("The production API is not configured. Sign-in and code review are unavailable yet.");
+  }
   const headers = new Headers(init.headers);
   if (init.body) headers.set("Content-Type", "application/json");
   const token = getToken();
@@ -79,6 +84,10 @@ export function generateTestCases(language: Language, source_code: string): Prom
 
 export function listAnalyses(): Promise<AnalysisSummary[]> {
   return request<AnalysisSummary[]>("/api/analyses");
+}
+
+export function getAnalysis(id: number): Promise<Analysis> {
+  return request<Analysis>(`/api/analyses/${id}`);
 }
 
 export function removeAnalysis(id: number): Promise<void> {

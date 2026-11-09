@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { authenticate, clearToken, generateTestCases, getToken, revokeSession, runAnalysis } from "./api";
+import { authenticate, clearToken, generateTestCases, getAnalysis, getToken, revokeSession, runAnalysis } from "./api";
 
 describe("API client", () => {
   beforeEach(() => {
@@ -70,6 +70,29 @@ describe("API client", () => {
     await expect(authenticate("login", { email: "bad@example.com", password: "x" })).rejects.toThrow(
       "service unavailable",
     );
+  });
+
+  it("loads saved analyses through the API client", async () => {
+    const fetchMock = vi.fn().mockResolvedValue(
+      new Response(
+        JSON.stringify({
+          id: 8,
+          language: "python",
+          quality_score: 100,
+          status: "completed",
+          findings: [],
+          ai_findings: [],
+          analyzers: [],
+          source_code: null,
+          created_at: "2026-01-01T00:00:00Z",
+        }),
+        { status: 200, headers: { "Content-Type": "application/json" } },
+      ),
+    );
+    vi.stubGlobal("fetch", fetchMock);
+
+    expect((await getAnalysis(8)).id).toBe(8);
+    expect(fetchMock.mock.calls[0][0]).toContain("/api/analyses/8");
   });
 
   it("sends a specific access token when revoking a session", async () => {
