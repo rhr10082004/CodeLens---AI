@@ -67,5 +67,5 @@ This list reflects the current implementation in this standalone project. A chec
 - The local demo frontend and API are running at `http://127.0.0.1:5173` and `http://127.0.0.1:8001`; the demo account uses the isolated ignored SQLite database.
 - The target public GitHub repository contains the initial project commit on `main`; the local working tree is clean.
 - The frontend is deployed at `https://codelens-ai-eight-ivory.vercel.app/`. No production API URL is configured; sign-in, analysis, and history need a separately hosted backend.
-- No Render service, PostgreSQL database, or production Redis service has been provisioned; no production deployment has been attempted.
+- No Render service, PostgreSQL database, or production Redis service has been provisioned; the backend has not been deployed to production.
 - Existing pre-revocation access tokens must be replaced with a fresh login after applying migration `0003`.
