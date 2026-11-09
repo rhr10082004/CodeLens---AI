@@ -2,6 +2,7 @@ services:
   - type: web
     name: codelens-ai-api
     runtime: docker
+    plan: free
     dockerfilePath: ./backend/Dockerfile
     dockerContext: .
     healthCheckPath: /health
@@ -13,20 +14,26 @@ services:
       - key: ENVIRONMENT
         value: production
       - key: JWT_SECRET_KEY
-        sync: false
+        generateValue: true
       - key: RATE_LIMIT_STORAGE_URI
-        sync: false
-      - key: GEMINI_API_KEY
-        sync: false
+        fromService:
+          type: keyvalue
+          name: codelens-ai-redis
+          property: connectionString
       - key: CORS_ORIGINS
-        sync: false
+        value: https://codelens-ai-eight-ivory.vercel.app
       - key: MAX_SOURCE_BYTES
         value: "200000"
       - key: STORE_SOURCE_BY_DEFAULT
         value: "false"
+  - type: keyvalue
+    name: codelens-ai-redis
+    plan: free
+    region: oregon
+    ipAllowList: []
 databases:
   - name: codelens-ai-postgres
     databaseName: codelens
     user: codelens
-    plan: basic-256mb
+    plan: free
     region: oregon
